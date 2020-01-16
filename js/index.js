@@ -39,16 +39,16 @@ $(document).ready(function () {
     resetEmbed();
 
     // add basic embed generation to source
-    source = 'embed=discord.Embed(';
+    source = 'let embed = new Discord.RichEmbed()';
 
     if (embed.url) {
       $('.embed-inner').append('<div class="embed-title"><a href="' + embed.url + '">' + embed.title + '</a></div>');
 
       // update source
       if (switches.useVars) {
-        source += 'title=' + embed.title + ', url=' + embed.url;
+        source +=  embed.title + embed.url;
       } else {
-        source += 'title="' + embed.title + '", url="' + embed.url + '"';
+        source +=  embed.title + embed.url;
       }
     } else if (embed.title.length === 0) {
       source += "";
@@ -57,9 +57,9 @@ $(document).ready(function () {
 
       // update source
       if (switches.useVars) {
-        source += 'title=' + embed.title;
+        source += embed.title;
       } else {
-        source += 'title="' + embed.title + '"';
+        source += embed.title;
       }
 
     }
@@ -73,9 +73,9 @@ $(document).ready(function () {
 
       // update source
       if (switches.useVars) {
-        source += 'description=' + embed.description;
+        source += embed.description;
       } else {
-        source += 'description="' + embed.description + '"';
+        source += embed.description;
       }
     }
 
@@ -87,7 +87,7 @@ $(document).ready(function () {
       }
 
       // update source
-      source += 'color=0x' + embed.color.substr(1);
+      source += '0x' + embed.color.substr(1);
     }
 
     // finished the basic setup
@@ -95,24 +95,24 @@ $(document).ready(function () {
 
     if (embed.author.name) {
       // add author to source
-      source += 'embed.set_author(';
+      source += 'embed.seAuthor(';
 
       $('.embed-title').before('<div class="embed-author"><a class="embed-author-name" href="' + embed.author.url + '">' + embed.author.name + '</a></div>');
 
       // update source
       if (switches.useVars) {
-        source += 'name=' + embed.author.name;
+        source += embed.author.name;
       } else {
-        source += 'name="' + embed.author.name + '"';
+        source += embed.author.name;
       }
 
       if(embed.author.url) {
         source += ', ';
 
         if (switches.useVars) {
-          source += 'url=' + embed.author.url;
+          source += embed.author.url;
         } else {
-          source += 'url="' + embed.author.url + '"';
+          source += embed.author.url;
         }
       }
 
@@ -123,9 +123,9 @@ $(document).ready(function () {
 
         // update source
         if (switches.useVars) {
-          source += 'icon_url=' + embed.author.icon;
+          source += embed.author.icon;
         } else {
-          source += ', icon_url="' + embed.author.icon + '"';
+          source += embed.author.icon;
         }
       }
 
@@ -135,16 +135,16 @@ $(document).ready(function () {
 
     if (embed.thumb_url) {
       // add thumbnail
-      source += 'embed.set_thumbnail(';
+      source += 'embed.setThumbnail(';
 
       $('.card.embed .card-block').append('<img class="embed-thumb" src="' + embed.thumb_url + '" />');
       $('.embed-thumb').height($('.embed-thumb')[0].naturalHeight);
 
       // update source
       if (switches.useVars) {
-        source += 'url=' + embed.thumb_url;
+        source += embed.thumb_url;
       } else {
-        source += 'url="' + embed.thumb_url + '"';
+        source += embed.thumb_url;
       }
 
       // finish thumbnail
@@ -173,9 +173,9 @@ $(document).ready(function () {
 
       // add field
       if (switches.useVars) {
-        source += 'embed.add_field(name=' + field.name + ', value=' + field.value + ', inline=' + (field.inline && 'True' || 'False') + ')\n';
+        source += 'embed.addField(field.name + ', ' + field.value + ', ' + (field.inline && 'True' || 'False') + ')\n';
       } else {
-        source += 'embed.add_field(name="' + field.name + '", value="' + field.value + '", inline=' + (field.inline && 'True' || 'False') + ')\n';
+        source += 'embed.addField(field.name + ', ' + field.value + ', ' + (field.inline && 'True' || 'False') + ')\n';
       }
     }
 
@@ -184,14 +184,14 @@ $(document).ready(function () {
 
       // add footer
       if (switches.useVars) {
-        source += 'embed.set_footer(text=' + embed.footer + ')\n';
+        source += 'embed.setFooter(embed.footer')\n';
       } else {
-        source += 'embed.set_footer(text="' + embed.footer + '")\n';
+        source += 'embed.setFooter(embed.footer')\n';
       }
     }
 
     // add send function
-    source += 'await self.bot.say(embed=embed)\n';
+    source += 'message.channel.send';
 
     // code
     $('.source').text(source);
